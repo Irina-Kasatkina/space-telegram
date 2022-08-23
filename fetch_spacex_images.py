@@ -1,8 +1,27 @@
 import argparse
+import os
 
+from dotenv import load_dotenv
 import requests
 
 from fetch_image import fetch_image
+
+
+def create_parser():
+    """ Создаёт парсер параметров командной строки. """
+    parser = argparse.ArgumentParser(
+            description='Получает с сайта SpaceX фотографии конкретного '
+                        'запуска ракеты, если на вход дан id этого запуска. '
+                        'Получает с сайта SpaceX фотографии последнего '
+                        'из запусков, для которого имеются фотографии, '
+                        'если id запуска не указан.'
+    )
+    parser.add_argument(
+        'launch_id',
+        nargs='?',
+        help='id нужного запуска для скачивания фото из него'
+    )
+    return parser
 
 
 def fetch_spacex_launch(images_directory: str, launch_id: str):
@@ -46,28 +65,13 @@ def fetch_spacex_last_launch(images_directory: str):
             fetch_image(image_url, images_directory, image_name)
 
 
-def create_parser():
-    """ Создаёт парсер параметров командной строки. """
-    parser = argparse.ArgumentParser(
-            description='Получает с сайта SpaceX фотографии конкретного '
-                        'запуска ракеты, если на вход дан id этого запуска. '
-                        'Получает с сайта SpaceX фотографии последнего '
-                        'из запусков, для которого имеются фотографии, '
-                        'если id запуска не указан.'
-    )
-    parser.add_argument(
-        'launch_id',
-        nargs='?',
-        help='id нужного запуска для скачивания фото из него'
-    )
-    return parser
-
-
 def main():
+    load_dotenv()
+    images_directory = os.getenv('IMAGES_DIRECTORY')
+
     parser = create_parser()
     args = parser.parse_args()
 
-    images_directory = './images/spacex'
     if args.launch_id:
         fetch_spacex_launch(images_directory, args.launch_id.strip())
         return

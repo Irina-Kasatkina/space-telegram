@@ -36,9 +36,10 @@ def fetch_nasa_apod(images_directory: str, nasa_api_key: str):
 
 def main():
     load_dotenv()
+    images_directory = os.getenv('IMAGES_DIRECTORY')
     nasa_api_key = os.getenv('NASA_API_KEY')
 
-    fetch_nasa_apod('./images/nasa_apod', nasa_api_key)
+    fetch_nasa_apod(images_directory, nasa_api_key)
 
 
 if __name__ == '__main__':
