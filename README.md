@@ -9,7 +9,7 @@
 
 ## Установка
 
-### Клонировать проект
+### Клонирование проекта
 Сделайте клонирование проекта:
 ```
 git clone https://github.com/Irina-Kasatkina/web-api-space-telegram.git
