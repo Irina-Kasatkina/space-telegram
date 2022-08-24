@@ -1,11 +1,11 @@
 # Загрузка в Telegram фотографий космоса
 
 Этот проект представляет собой набор скриптов для скачивания с сервисов SpaceX и NASA фотографий космоса и загрузки их в Telegram:
-- ***fetch_apod_nasa_images*** - получает не более 30 случайных фотографий Astronomy Pictures of the Day (APOD) с сайта NASA и сохраняет их на локальном компьютере;
-- ***fetch_nasa_epic_images*** - получает 5 фотографий Земли Earth Polychromatic Imaging Camera (EPIC) с сайта NASA и сохраняет их на локальном компьютере;
-- ***fetch_spacex_images*** - получает фотографии запуска ракеты с сайта SpaceX и сохраняет их на локальном компьютере;
-- ***publish_image_in_telegram*** - публикует одну фотографию в telegram-канале с помощью telegram-бота;
-- ***publish_all_images_in_telegram*** - публикует в telegram-канале все фотографии из папки с фото, делая задержку после публикации каждой фотографии.
+- *fetch_apod_nasa_images* - получает не более 30 случайных фотографий Astronomy Pictures of the Day (APOD) с сайта NASA и сохраняет их на локальном компьютере;
+- *fetch_nasa_epic_images* - получает 5 фотографий Земли Earth Polychromatic Imaging Camera (EPIC) с сайта NASA и сохраняет их на локальном компьютере;
+- *fetch_spacex_images* - получает фотографии запуска ракеты с сайта SpaceX и сохраняет их на локальном компьютере;
+- *publish_image_in_telegram* - публикует одну фотографию в telegram-канале с помощью telegram-бота;
+- *publish_all_images_in_telegram* - публикует в telegram-канале все фотографии из папки с фото, делая задержку после публикации каждой фотографии.
 
 ## Установка
 
