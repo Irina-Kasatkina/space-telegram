@@ -30,10 +30,10 @@ pip install -r requirements.txt
 
 - `NASA_API_KEY` - ваш API KEY с сервиса API NASA. Например: `NASA_API_KEY=hg639e20ad155405123dk5677542fecf00231da7`. Чтобы получить API KEY, сгенерируйте его на [сервисе NASA](https://api.nasa.gov/). Это обязательная переменная. Используется в *fetch_apod_nasa_images* и *fetch_nasa_epic_images*.
 
-- `APOD_NASA_COUNT` - количество фотографий APOD, которое нужно получить с сайта NASA. Например, `APOD_NASA_COUNT=10`. Значение по умолчанию - 30. Используется в *fetch_apod_nasa_images*.
+- `APOD_NASA_COUNT` - количество фотографий APOD, которое нужно получить с сайта NASA. Например, `APOD_NASA_COUNT=10`. Значение по умолчанию - `30`. Используется в *fetch_apod_nasa_images*.
 
-- `EPIC_NASA_COUNT` - количество фотографий EPIC, которое нужно получить с сайта NASA. Например, `EPIC_NASA_COUNT=2`. Значение по умолчанию - 5. Используется в *fetch_epic_nasa_images*.
-- 
+- `EPIC_NASA_COUNT` - количество фотографий EPIC, которое нужно получить с сайта NASA. Например, `EPIC_NASA_COUNT=2`. Значение по умолчанию - `5`. Используется в *fetch_epic_nasa_images*.
+
 - `TELEGRAM_BOT_TOKEN` - API-токен telegram-бота, с помощью которого будет осуществляться публикация фотографий. Например: `TELEGRAM_BOT_TOKEN=958423683:AAEAtJ5Lde5YYfkjergber`. Если такого telegram-бота пока нет, [создайте его](https://way23.ru/регистрация-бота-в-telegram.html). Это обязательная переменная. Используется в *publish_all_images_in_telegram* и *publish_image_in_telegram*.
 
 - `TELEGRAM_CHANNEL_ID` - id telegram-канала, в котором будут публиковаться фотографии. Например: `TELEGRAM_CHANNEL_ID=@flood_channel`. Если такого telegram-канала пока нет, [создайте его и назначьте вашего telegram-бота администратором канала](https://smmplanner.com/blog/otlozhennyj-posting-v-telegram/). Это обязательная переменная. Используется в *publish_all_images_in_telegram* и *publish_image_in_telegram*.
@@ -57,7 +57,7 @@ python -m publish_all_images_in_telegram
 
 Для скрипта *publish_image_in_telegram* можно указать необязательный параметр командной строки `{путь_к_файлу_с_фото}` - абсолютный путь к конкретному файлу, который вы хотите опубликовать. Например: `C:/images/image1.jpg`.<br>
 Если этот параметр указан, то скрипт опубликует фото из файла с указанным именем.<br>
-Если этот параметр не указан, то скрипт выберет файл для публикации случайным образом из директории, указанной в переменной окружения IMAGES_DIRECTORY или одной из её поддиректорий.
+Если этот параметр не указан, то скрипт выберет файл для публикации случайным образом из директории, указанной в переменной окружения `IMAGES_DIRECTORY` или одной из её поддиректорий.
 
 ### Цель проекта
 
