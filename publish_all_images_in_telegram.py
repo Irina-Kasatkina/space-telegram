@@ -1,56 +1,72 @@
-﻿import argparse
-import os
-import random
+﻿import os
+import pathlib
 import time
 
 from dotenv import load_dotenv
-import telegram
 
+import constants
 from publish_image_in_telegram import publish_image_in_telegram
-
-
-FOUR_HOURS_IN_SECONDS = 14400
+from get_files import get_good_random_file
 
 
 def publish_all_images_in_telegram(
         telegram_bot_token: str, telegram_channel_id: str,
-        images_directory: str, delay_in_seconds: int):
+        img_dirs: list, delay_in_seconds: int):
     """
     Публикует все фотографии из заданной директории
     в указанном telegram-канале с помощью указанного telegram-бота.
     """
 
-    image_filenames = os.listdir(images_directory)
-    random.shuffle(image_filenames)
-    for image_filename in image_filenames:
+    published_filepaths = set()
+
+    while True:
+        img_filepath = get_good_random_file(img_dirs, published_filepaths)
+        if not img_filepath:
+            return True
+
         if not publish_image_in_telegram(telegram_bot_token,
                                          telegram_channel_id,
-                                         images_directory,
-                                         image_filename):
-            break
+                                         img_filepath):
+            return False
+
+        published_filepaths.add(img_filepath)
         time.sleep(delay_in_seconds)
 
 
 def main():
     load_dotenv()
-    images_directory = os.getenv('IMAGES_DIRECTORY')
-    telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
-    telegram_channel_id = os.getenv('TELEGRAM_CHANNEL_ID')
+    images_directory = os.getenv('IMAGES_DIRECTORY',
+                                 default=constants.DEFAULT_IMAGES_DIRECTORY)
 
-    delay_in_seconds = 0
     try:
-        delay_in_seconds = int(os.getenv('DELAY_IN_SECONDS'))
-    except:
-        pass
+        telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+    except KeyError:
+        print('Не задана переменная окружения TELEGRAM_BOT_TOKEN',
+              'в файле .env.')
+        return
 
-    if not delay_in_seconds:
-        delay_in_seconds = FOUR_HOURS_IN_SECONDS
+    try:
+        telegram_channel_id = os.environ['TELEGRAM_CHANNEL_ID']
+    except KeyError:
+        print('Не задана переменная окружения TELEGRAM_CHANNEL_ID',
+              'в файле .env.')
+        return
 
+    delay_in_seconds = int(os.getenv('DELAY_IN_SECONDS',
+                                     default=constants.DEFAULT_DELAY_IN_SECONDS))
+
+    images_directories = [
+            pathlib.Path.cwd() / images_directory / constants.SPACEX_IMAGES_SUBDIR,
+            pathlib.Path.cwd() / images_directory / constants.APOD_IMAGES_SUBDIR,
+            pathlib.Path.cwd() / images_directory / constants.EPIC_IMAGES_SUBDIR,
+    ]
     while True:
-        publish_all_images_in_telegram(telegram_bot_token,
-                                       telegram_channel_id,
-                                       images_directory,
-                                       delay_in_seconds)
+        if not publish_all_images_in_telegram(telegram_bot_token,
+                                              telegram_channel_id,
+                                              images_directories,
+                                              delay_in_seconds):
+            return
+
 
 if __name__ == '__main__':
     main()

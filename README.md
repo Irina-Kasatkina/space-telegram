@@ -1,8 +1,8 @@
 # Загрузка в Telegram фотографий космоса
 
 Этот проект представляет собой набор скриптов для скачивания с сервисов SpaceX и NASA фотографий космоса и загрузки их в Telegram:
-- *fetch_apod_nasa_images* - получает не более 30 случайных фотографий Astronomy Pictures of the Day (APOD) с сайта NASA и сохраняет их на локальном компьютере;
-- *fetch_nasa_epic_images* - получает 5 фотографий Земли Earth Polychromatic Imaging Camera (EPIC) с сайта NASA и сохраняет их на локальном компьютере;
+- *fetch_apod_nasa_images* - получает несколько случайных фотографий Astronomy Pictures of the Day (APOD) с сайта NASA и сохраняет их на локальном компьютере;
+- *fetch_nasa_epic_images* - получает несколько фотографий Земли Earth Polychromatic Imaging Camera (EPIC) с сайта NASA и сохраняет их на локальном компьютере;
 - *fetch_spacex_images* - получает фотографии запуска ракеты с сайта SpaceX и сохраняет их на локальном компьютере;
 - *publish_image_in_telegram* - публикует одну фотографию в telegram-канале с помощью telegram-бота;
 - *publish_all_images_in_telegram* - публикует в telegram-канале все фотографии из папки с фото, делая задержку после публикации каждой фотографии.
@@ -26,16 +26,20 @@ pip install -r requirements.txt
 
 Доступны 5 переменных:
 
-- `IMAGES_DIRECTORY` - абсолютный или относительный (относительно директории, из которой запускаются скрипты) путь к папке с фотографиями. Например: `IMAGES_DIRECTORY=./images`.
+- `IMAGES_DIRECTORY` - относительный (относительно директории, из которой запускаются скрипты) путь к папке с фотографиями. Например: `IMAGES_DIRECTORY=images`. Значение по умолчанию - `images`. Используется во всех утилитах.
 
-- `NASA_API_KEY` - ваш API KEY с сервиса API NASA. Например: `NASA_API_KEY=hg639e20ad155405123dk5677542fecf00231da7`. Чтобы получить API KEY, сгенерируйте его на [сервисе NASA](https://api.nasa.gov/).
+- `NASA_API_KEY` - ваш API KEY с сервиса API NASA. Например: `NASA_API_KEY=hg639e20ad155405123dk5677542fecf00231da7`. Чтобы получить API KEY, сгенерируйте его на [сервисе NASA](https://api.nasa.gov/). Это обязательная переменная. Используется в *fetch_apod_nasa_images* и *fetch_nasa_epic_images*.
 
-- `TELEGRAM_BOT_TOKEN` - API-токен telegram-бота, с помощью которого будет осуществляться публикация фотографий. Например: `TELEGRAM_BOT_TOKEN=958423683:AAEAtJ5Lde5YYfkjergber`. Если такого telegram-бота пока нет, [создайте его](https://way23.ru/регистрация-бота-в-telegram.html).
+- `APOD_NASA_COUNT` - количество фотографий APOD, которое нужно получить с сайта NASA. Например, `APOD_NASA_COUNT=10`. Значение по умолчанию - 30. Используется в *fetch_apod_nasa_images*.
 
-- `TELEGRAM_CHANNEL_ID` - id telegram-канала, в котором будут публиковаться фотографии. Например: `TELEGRAM_CHANNEL_ID=@flood_channel`. Если такого telegram-канала пока нет, [создайте его и назначьте вашего telegram-бота администратором канала](https://smmplanner.com/blog/otlozhennyj-posting-v-telegram/).
+- `EPIC_NASA_COUNT` - количество фотографий EPIC, которое нужно получить с сайта NASA. Например, `EPIC_NASA_COUNT=2`. Значение по умолчанию - 5. Используется в *fetch_epic_nasa_images*.
+- 
+- `TELEGRAM_BOT_TOKEN` - API-токен telegram-бота, с помощью которого будет осуществляться публикация фотографий. Например: `TELEGRAM_BOT_TOKEN=958423683:AAEAtJ5Lde5YYfkjergber`. Если такого telegram-бота пока нет, [создайте его](https://way23.ru/регистрация-бота-в-telegram.html). Это обязательная переменная. Используется в *publish_all_images_in_telegram* и *publish_image_in_telegram*.
+
+- `TELEGRAM_CHANNEL_ID` - id telegram-канала, в котором будут публиковаться фотографии. Например: `TELEGRAM_CHANNEL_ID=@flood_channel`. Если такого telegram-канала пока нет, [создайте его и назначьте вашего telegram-бота администратором канала](https://smmplanner.com/blog/otlozhennyj-posting-v-telegram/). Это обязательная переменная. Используется в *publish_all_images_in_telegram* и *publish_image_in_telegram*.
 
 - `DELAY_IN_SECONDS` - задержка в секундах между публикациями фотографий для скрипта *publish_all_images_in_telegram*. Например: `DELAY_IN_SECONDS=3600`. 
-Если эта переменная не указана, то по умолчанию задержка будет 4 часа.
+Значение по умолчанию - `14400` (4 часа). Используется в *publish_all_images_in_telegram*.
 
 ## Запуск
 
@@ -44,16 +48,16 @@ pip install -r requirements.txt
 python -m fetch_apod_nasa_images
 python -m fetch_epic_nasa_images
 python -m fetch_spacex_images [{id_конкретного_запуска_ракеты}]
-python -m publish_image_in_telegram [{имя_файла_с_фото}]
+python -m publish_image_in_telegram [{путь_к_файлу_с_фото}]
 python -m publish_all_images_in_telegram
 ```
 Здесь для скрипта *fetch_spacex_images* можно указать необязательный параметр командной строки `{id_конкретного_запуска_ракеты}`. Например: `5eb87d47ffd86e000604b38a`.<br>
 Если этот параметр указан, то скрипт получит фотографии указанного запуска.<br>
 Если этот параметр не указан, то скрипт получит фотографии последнего из запусков, для которого имеются фотографии.
 
-Для скрипта *publish_image_in_telegram* можно указать необязательный параметр командной строки `{имя_файла_с_фото}` - имя конкретного файла, который вы хотите опубликовать. Например: `image1.jpg`. Файл должен лежать в директории, заданной в переменной окружения `IMAGES_DIRECTORY`.<br>
+Для скрипта *publish_image_in_telegram* можно указать необязательный параметр командной строки `{путь_к_файлу_с_фото}` - абсолютный путь к конкретному файлу, который вы хотите опубликовать. Например: `C:/images/image1.jpg`.<br>
 Если этот параметр указан, то скрипт опубликует фото из файла с указанным именем.<br>
-Если этот параметр не указан, то скрипт выберет файл для публикации случайным образом.
+Если этот параметр не указан, то скрипт выберет файл для публикации случайным образом из директории, указанной в переменной окружения IMAGES_DIRECTORY или одной из её поддиректорий.
 
 ### Цель проекта
 

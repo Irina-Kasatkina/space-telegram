@@ -1,26 +1,23 @@
 import os
-import pathlib
+from pathlib import Path
 from urllib.parse import urlsplit, unquote
 
 import requests
 
 
-def fetch_image(image_url: str, images_directory: str,
-                image_name: str, request_params=None):
+def fetch_image(img_url: str, img_dir: str,
+                img_name: str, request_params=None):
     """
     Получает картинку по указанному url и помещает её в указанную папку.
     """
 
-    if not request_params:
-        request_params = {}
-
-    response = requests.get(image_url, request_params)
+    response = requests.get(img_url, params=request_params)
     response.raise_for_status()
 
-    pathlib.Path(images_directory).mkdir(parents=True, exist_ok=True)
+    Path(img_dir).mkdir(parents=True, exist_ok=True)
 
-    file_extension = get_file_extension(image_url)
-    filepath = f'{images_directory}/{image_name}{file_extension}'
+    filename = f'{img_name}{get_file_extension(img_url)}'
+    filepath = Path(img_dir) / filename
 
     with open(filepath, "wb") as file:
         file.write(response.content)
@@ -30,6 +27,6 @@ def get_file_extension(url: str) -> str:
     """ Выделяет расширение файла из заданной строки url. """
 
     filepath_from_url = urlsplit(url).path
-    file_extension = os.path.splitext(filepath_from_url)[1]
-    decoded_file_extension = unquote(file_extension)
-    return decoded_file_extension
+    file_ext = os.path.splitext(filepath_from_url)[1]
+    decoded_file_ext = unquote(file_ext)
+    return decoded_file_ext
