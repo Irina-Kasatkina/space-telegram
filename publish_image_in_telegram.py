@@ -35,7 +35,9 @@ def publish_image_in_telegram(telegram_bot_token: str,
     """
 
     bot = telegram.Bot(token=telegram_bot_token)
-    for i in range(1, 5):
+
+    delay = 1
+    while True:
         try:
             bot.send_document(chat_id=telegram_channel_id,
                               document=open(img_filepath, 'rb'))
@@ -47,6 +49,7 @@ def publish_image_in_telegram(telegram_bot_token: str,
         except telegram.error.NetworkError as ex:
             print(ex)
             time.sleep(i)
+            delay = 10
         except Exception as ex:
             print(ex)
             return False
