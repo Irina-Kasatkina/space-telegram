@@ -39,11 +39,7 @@ def main():
     img_dir = os.getenv('IMAGES_DIRECTORY',
                         default=constants.DEFAULT_IMAGES_DIRECTORY)
 
-    try:
-        nasa_api_key = os.environ['NASA_API_KEY']
-    except KeyError:
-        print('Не задана переменная окружения NASA_API_KEY в файле .env.')
-        return
+    nasa_api_key = os.environ['NASA_API_KEY']
 
     apod_nasa_count = int(os.getenv('APOD_NASA_COUNT',
                                     default=constants.DEFAULT_APOD_NASA_COUNT))

@@ -48,7 +48,7 @@ def publish_image_in_telegram(telegram_bot_token: str,
             return False
         except telegram.error.NetworkError as ex:
             print(ex)
-            time.sleep(i)
+            time.sleep(delay)
             delay = 10
         except Exception as ex:
             print(ex)
@@ -57,19 +57,8 @@ def publish_image_in_telegram(telegram_bot_token: str,
 
 def main():
     load_dotenv()
-    try:
-        telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
-    except KeyError:
-        print('Не задана переменная окружения TELEGRAM_BOT_TOKEN',
-              'в файле .env.')
-        return
-
-    try:
-        telegram_channel_id = os.environ['TELEGRAM_CHANNEL_ID']
-    except KeyError:
-        print('Не задана переменная окружения TELEGRAM_CHANNEL_ID',
-              'в файле .env.')
-        return
+    telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+    telegram_channel_id = os.environ['TELEGRAM_CHANNEL_ID']
 
     parser = create_parser()
     args = parser.parse_args()

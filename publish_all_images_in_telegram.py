@@ -38,19 +38,8 @@ def main():
     images_directory = os.getenv('IMAGES_DIRECTORY',
                                  default=constants.DEFAULT_IMAGES_DIRECTORY)
 
-    try:
-        telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
-    except KeyError:
-        print('Не задана переменная окружения TELEGRAM_BOT_TOKEN',
-              'в файле .env.')
-        return
-
-    try:
-        telegram_channel_id = os.environ['TELEGRAM_CHANNEL_ID']
-    except KeyError:
-        print('Не задана переменная окружения TELEGRAM_CHANNEL_ID',
-              'в файле .env.')
-        return
+    telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+    telegram_channel_id = os.environ['TELEGRAM_CHANNEL_ID']
 
     delay_in_seconds = int(os.getenv('DELAY_IN_SECONDS',
                                      default=constants.DEFAULT_DELAY_IN_SECONDS))
@@ -60,6 +49,7 @@ def main():
             pathlib.Path.cwd() / images_directory / constants.APOD_IMAGES_SUBDIR,
             pathlib.Path.cwd() / images_directory / constants.EPIC_IMAGES_SUBDIR,
     ]
+
     while True:
         if not publish_all_images_in_telegram(telegram_bot_token,
                                               telegram_channel_id,
