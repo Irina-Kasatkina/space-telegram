@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from urllib.parse import urlsplit, unquote
+from urllib.parse import unquote, urlsplit
 
 import requests
 
